@@ -6,16 +6,17 @@
  * Date: 01-01-2012
  * 
  * TODO:
- * - implement Reduc feature
  * - pretty up the aboutDialog, looks terrible
  * - Change window icon, use cool anime avatar
  * - "Bail out" button for (too) long strings
  * - Implement some kind of timer system?
+ * - Save/Export list (CSV filetype)
  * 
  * DEBUG:
  * - After run reduc, set mainText to less than 2
- *   Error occurs, runs 2 of previous String
- * - get mainText to auto select on open 
+ *   Error occurs, runs reduc2 of previous String
+ * - get mainText to auto select on open (Driving me nuts!)
+ * - fix 'this' leaks in constructor (not smart enough)
 
  */
 
@@ -58,9 +59,8 @@ class Permutor implements ActionListener, KeyListener {
         permuteButton.addActionListener(this);
         mainText.addKeyListener(this);
 
-        reducSpinner.setSize(10, JSpinner.HEIGHT);
         reducSpinner.setEnabled(false);
-        reducSpinner.setMaximumSize(new Dimension(45, 20));
+        reducSpinner.setMaximumSize(new Dimension(45, 23));
 
         // Create Dialogs
         JLabel titleLabel = new JLabel("Permutor v0.1");
@@ -178,7 +178,7 @@ class Permutor implements ActionListener, KeyListener {
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
         mainFrame.setSize(300, 400);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        mainText.selectAll();   // FIXME (Pleeeeaase!)
         mainFrame.setVisible(true);
     }
     
