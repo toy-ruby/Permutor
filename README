@@ -1,11 +1,16 @@
 README
 
 Disclaimer:
-	I am new to git and programming in any kind of structured way. Admittedly, I am still very much at a loss as to how to use versioning software in general. Still learning.
+	I am new to git and programming in any kind of structured way.
+ Admittedly, I am still very much at a loss as to how to use versioning software
+ in general. Still learning.
 
 Permutor v0.1
 
-A small application to generate permutations of a given string. "Reduc" feature allow the number of characters to be reduced while still permuting all character from original string. Export to CSV allows saving values in a spreadsheet friendly format.
+A small application to generate permutations of a given string. "Reduc" feature
+ allow the number of characters to be reduced while still permuting all 
+character from original string. Export to CSV allows saving values in a 
+spreadsheet friendly format.
 
  * TODO:
  * - pretty up the aboutDialog, looks terrible
