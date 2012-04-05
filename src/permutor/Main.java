@@ -23,16 +23,22 @@ package permutor;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FileDialog;
-import java.awt.Image;
-import java.awt.event.*;
-import java.io.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
-import javax.swing.*;
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import javax.activation.MimetypesFileTypeMap;
-import permute.*;
-import reduc.*;
+import javax.swing.*;
+import permute.Permute;
+import reduc.Reduc;
 
 public class Main {
 
@@ -45,10 +51,8 @@ class Permutor implements ActionListener, KeyListener {
 
     final static double VERSION = 0.01;
 
-    /* Permutor Object vaiables */
+    /* Permutor Object variables */
     JFrame mainFrame = new JFrame("Permutor");
-    ImageIcon icon = new ImageIcon("/src/mini.avatar.gif"); // FIXME
-    Image image = icon.getImage();                          // FIXME
     JPanel toolBox = new JPanel();
     final JTextField mainText = new JTextField("Text goes here");
     final JButton permuteButton = new JButton("Permute!");
@@ -60,8 +64,7 @@ class Permutor implements ActionListener, KeyListener {
 
     /*  CONSTRUCTOR */
     protected Permutor() {
-
-        mainFrame.setIconImage(image);
+       
         listingArea.setEditable(false);
         permuteButton.addActionListener(this);
         mainText.addKeyListener(this);
@@ -124,7 +127,7 @@ class Permutor implements ActionListener, KeyListener {
 
             public void actionPerformed(ActionEvent e) {
 
-                showAboutDialog();
+                showAboutDialog();  // TODO: make this look better
             }
         });
 
@@ -185,7 +188,7 @@ class Permutor implements ActionListener, KeyListener {
         mainFrame.setVisible(true);
         mainText.selectAll();   // FIXME (Pleeeeaase!)
 
-    }
+    } // END CONSTRUCTOR
 
     public void actionPerformed(ActionEvent e) {
         if (mainText.getText().length() != reducSpinner.getValue()) {
@@ -230,13 +233,14 @@ class Permutor implements ActionListener, KeyListener {
 
     public void keyReleased(KeyEvent e) {
         if (e.getKeyChar() == KeyEvent.VK_ENTER) {
+            // Check if inut is 10+ chars long
             if (mainText.getText().length() > 10) {
                 int result = JOptionPane.showConfirmDialog(mainFrame, "Permuting string longer than 10 characters could render \n"
                         + "your computer unstable. Do you wish to continue?");
                 switch (result) {
                     case JOptionPane.YES_OPTION:
                         doPerm();
-                        mainText.selectAll();
+                        mainText.selectAll();   
                         break;
                     case JOptionPane.NO_OPTION:
                         break;
@@ -258,6 +262,7 @@ class Permutor implements ActionListener, KeyListener {
         String str = mainText.getText();
         List<String> pList = new ArrayList();
 
+        // Do this if reduc box is checked
         if (reducCheckBox.isSelected()
                 && ((Integer) reducSpinner.getValue()
                 < mainText.getText().length())) {
@@ -291,7 +296,7 @@ class Permutor implements ActionListener, KeyListener {
         }
 
         mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        mainText.selectAll();
+        mainText.selectAll();   // THIS ONE WORKS!!! WHY?!
     }
 
     private void showAboutDialog() {
