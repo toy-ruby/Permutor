@@ -76,23 +76,7 @@ public class Reduc {
         return strs;
     }
 
-    /* EXAMPLE USAGE
-    public static void main(String[] args) {
-        String s = "acegik";
-        int r_val = 2;
-        reduc(s, r_val);
-        
-        if (save()) {
-            System.err.print("SAVE SUCCESSFUL! :O)\n");
-        } else {
-            System.err.print("SAVE FAILED! >-[\n");
-        }
-        for (String i : strs) {
-            System.err.print(i + "\n");
-        }
-    }
-     
-     */
+
 }
 
 class StringLengthComparator implements
