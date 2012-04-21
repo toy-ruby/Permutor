@@ -13,7 +13,6 @@
  * - Save/Export list (CSV filetype)
  * 
  * DEBUG:
- * - get mainText to auto select on open (Driving me nuts!)
  * - fix 'this' leaks in constructor (not smart enough)
  * - Many more, I'm sure
 
@@ -47,14 +46,14 @@ public class Main {
     }
 }
 
-class Permutor implements ActionListener, KeyListener {
+class Permutor implements ActionListener, KeyListener, Runnable {
 
     final static double VERSION = 0.01;
 
     /* Permutor Object variables */
     JFrame mainFrame = new JFrame("Permutor");
     JPanel toolBox = new JPanel();
-    final JTextField mainText = new JTextField("Text goes here");
+    JTextField mainText = new JTextField("Text goes here");
     final JButton permuteButton = new JButton("Permute!");
     final JTextArea listingArea = new JTextArea(20, 1);
     // Reduc feature accessories
@@ -63,11 +62,11 @@ class Permutor implements ActionListener, KeyListener {
     JLabel reducLabel = new JLabel("Reduc?");
 
     /*  CONSTRUCTOR */
-    protected Permutor() {
+    public Permutor() {
        
         listingArea.setEditable(false);
-        permuteButton.addActionListener(this);
-        mainText.addKeyListener(this);
+        permuteButton.addActionListener(this);  //FIXME - this leak
+        mainText.addKeyListener(this);          //FIXME - this leak
 
         reducSpinner.setEnabled(false);
         reducSpinner.setMaximumSize(new Dimension(45, 23));
@@ -177,19 +176,32 @@ class Permutor implements ActionListener, KeyListener {
         // Set up the mainFrame
         mainFrame.setLayout(new BoxLayout(mainFrame.getContentPane(),
                 BoxLayout.Y_AXIS));
-        mainFrame.add(toolBox);
+        mainFrame.add(mainText);    //add(mainText) must come before add(toolBox)
+        mainFrame.add(toolBox);     //or mainText won't highlight on instantiation
+                                    //Try it, if you don't believe me!
         mainFrame.setJMenuBar(mb);
-        mainFrame.add(mainText);
+        
         mainFrame.add(new JScrollPane(listingArea,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
         mainFrame.setSize(300, 400);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setVisible(true);
+        /*
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run(){
+                mainText.selectAll();   // FIXME (Pleeeeaase!)
+            }
+        });
+        */
+        
+        
         mainText.selectAll();   // FIXME (Pleeeeaase!)
+        
 
     } // END CONSTRUCTOR
-
+    
+   
     public void actionPerformed(ActionEvent e) {
         if (mainText.getText().length() != reducSpinner.getValue()) {
 
@@ -260,7 +272,7 @@ class Permutor implements ActionListener, KeyListener {
         mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         listingArea.setText("");   // needs to clear JTextArea !!!
         String str = mainText.getText();
-        List<String> pList = new ArrayList();
+        List<String> pList = new ArrayList();   //FIXME - not sure
 
         // Do this if reduc box is checked
         if (reducCheckBox.isSelected()
@@ -347,5 +359,9 @@ class Permutor implements ActionListener, KeyListener {
         String result;
         result = s.substring(s.length() - 4);
         return result;
+    }
+
+    public void run() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
