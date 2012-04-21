@@ -2,8 +2,8 @@
  * 
  * Title: Permutor
  * Version: v 0.1
- * Author: Nick Mulder
- * Date: 01-01-2012
+ * Author: Tony Harrison
+ * Date: 04-21-2012
  * 
  * TODO:
  * - pretty up the aboutDialog, looks terrible
@@ -50,7 +50,9 @@ class Permutor implements ActionListener, KeyListener, Runnable {
 
     final static double VERSION = 0.01;
 
-    /* Permutor Object variables */
+    /*
+     * Permutor Object variables
+     */
     JFrame mainFrame = new JFrame("Permutor");
     JPanel toolBox = new JPanel();
     JTextField mainText = new JTextField("Text goes here");
@@ -61,9 +63,11 @@ class Permutor implements ActionListener, KeyListener, Runnable {
     JSpinner reducSpinner = new JSpinner();
     JLabel reducLabel = new JLabel("Reduc?");
 
-    /*  CONSTRUCTOR */
+    /*
+     * CONSTRUCTOR
+     */
     public Permutor() {
-       
+
         listingArea.setEditable(false);
         permuteButton.addActionListener(this);  //FIXME - this leak
         mainText.addKeyListener(this);          //FIXME - this leak
@@ -83,7 +87,9 @@ class Permutor implements ActionListener, KeyListener, Runnable {
             }
         });
         quitItem.addActionListener(new ActionListener() {
-            /* anonymous class */
+            /*
+             * anonymous class
+             */
 
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
@@ -154,7 +160,6 @@ class Permutor implements ActionListener, KeyListener, Runnable {
                             new SpinnerNumberModel(mainText.getText().length(),
                             2, mainText.getText().length(), 1));
                 }
-
             }
         });
 
@@ -178,9 +183,9 @@ class Permutor implements ActionListener, KeyListener, Runnable {
                 BoxLayout.Y_AXIS));
         mainFrame.add(mainText);    //add(mainText) must come before add(toolBox)
         mainFrame.add(toolBox);     //or mainText won't highlight on instantiation
-                                    //Try it, if you don't believe me!
+        //Try it, if you don't believe me!
         mainFrame.setJMenuBar(mb);
-        
+
         mainFrame.add(new JScrollPane(listingArea,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
@@ -188,20 +193,16 @@ class Permutor implements ActionListener, KeyListener, Runnable {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setVisible(true);
         /*
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run(){
-                mainText.selectAll();   // FIXME (Pleeeeaase!)
-            }
-        });
-        */
-        
-        
+         * SwingUtilities.invokeLater(new Runnable() { public void run(){
+         * mainText.selectAll(); // FIXME (Pleeeeaase!) } });
+         */
+
+
         mainText.selectAll();   // FIXME (Pleeeeaase!)
-        
+
 
     } // END CONSTRUCTOR
-    
-   
+
     public void actionPerformed(ActionEvent e) {
         if (mainText.getText().length() != reducSpinner.getValue()) {
 
@@ -252,7 +253,7 @@ class Permutor implements ActionListener, KeyListener, Runnable {
                 switch (result) {
                     case JOptionPane.YES_OPTION:
                         doPerm();
-                        mainText.selectAll();   
+                        mainText.selectAll();
                         break;
                     case JOptionPane.NO_OPTION:
                         break;
@@ -323,16 +324,16 @@ class Permutor implements ActionListener, KeyListener, Runnable {
         FileDialog saveDialog = new FileDialog(mainFrame, "Export to", FileDialog.SAVE);
         saveDialog.setVisible(true);
         StringBuilder sb = new StringBuilder();
-        
+
         // Pointless -- can't bring myself to take it out though :(
         MimetypesFileTypeMap fileTypeOf = new MimetypesFileTypeMap();
-        
+
         // Assess if file already has .csv extention
         File saveFile;
         String file = saveDialog.getFile();
-        if( !lastFour(file).equals(".csv")){
-            saveFile = new File(saveDialog.getDirectory() +
-                    file + ".csv");
+        if (!lastFour(file).equals(".csv")) {
+            saveFile = new File(saveDialog.getDirectory()
+                    + file + ".csv");
         } else {
             saveFile = new File(saveDialog.getDirectory() + file);
         }
@@ -354,8 +355,8 @@ class Permutor implements ActionListener, KeyListener, Runnable {
         }
         return true;
     }
-    
-    private String lastFour(String s){
+
+    private String lastFour(String s) {
         String result;
         result = s.substring(s.length() - 4);
         return result;
