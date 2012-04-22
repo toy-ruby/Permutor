@@ -14,6 +14,7 @@
  * 
  * DEBUG:
  * - fix 'this' leaks in constructor (not smart enough)
+ * - 
  * - Many more, I'm sure
 
  */
@@ -42,17 +43,19 @@ import reduc.Reduc;
 public class Main {
 
     public static void main(String[] args) {
-        Permutor p = new Permutor();
+        SwingUtilities.invokeLater(new Runnable() {
+
+            public void run() {
+                Permutor p = new Permutor();
+            }
+        });
     }
 }
 
-class Permutor implements ActionListener, KeyListener, Runnable {
+class Permutor implements ActionListener, KeyListener {
 
     final static double VERSION = 0.01;
-
-    /*
-     * Permutor Object variables
-     */
+    //Permutor Object variables
     JFrame mainFrame = new JFrame("Permutor");
     JPanel toolBox = new JPanel();
     JTextField mainText = new JTextField("Text goes here");
@@ -63,9 +66,7 @@ class Permutor implements ActionListener, KeyListener, Runnable {
     JSpinner reducSpinner = new JSpinner();
     JLabel reducLabel = new JLabel("Reduc?");
 
-    /*
-     * CONSTRUCTOR
-     */
+    //CONSTRUCTOR
     public Permutor() {
 
         listingArea.setEditable(false);
@@ -124,6 +125,7 @@ class Permutor implements ActionListener, KeyListener, Runnable {
             buttonGroup.add(item);
             viewMenu.add(item);
         }
+        
         JMenu helpMenu = new JMenu("Help");
         JMenuItem aboutItem = new JMenuItem("About");
 
@@ -181,8 +183,9 @@ class Permutor implements ActionListener, KeyListener, Runnable {
         // Set up the mainFrame
         mainFrame.setLayout(new BoxLayout(mainFrame.getContentPane(),
                 BoxLayout.Y_AXIS));
+        mainFrame.add(toolBox);
         mainFrame.add(mainText);    //add(mainText) must come before add(toolBox)
-        mainFrame.add(toolBox);     //or mainText won't highlight on instantiation
+        //or mainText won't highlight on instantiation
         //Try it, if you don't believe me!
         mainFrame.setJMenuBar(mb);
 
@@ -192,14 +195,9 @@ class Permutor implements ActionListener, KeyListener, Runnable {
         mainFrame.setSize(300, 400);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setVisible(true);
-        /*
-         * SwingUtilities.invokeLater(new Runnable() { public void run(){
-         * mainText.selectAll(); // FIXME (Pleeeeaase!) } });
-         */
-
-
         mainText.selectAll();   // FIXME (Pleeeeaase!)
-
+        mainText.validate();
+        mainText.requestFocus();
 
     } // END CONSTRUCTOR
 
@@ -300,7 +298,7 @@ class Permutor implements ActionListener, KeyListener, Runnable {
                 }
             }
         } else {
-
+            //Do this if reduc is NOT checked
             Permute perm = new Permute(str);
             pList = perm.getList();     // Commit to pList
         }
@@ -309,14 +307,17 @@ class Permutor implements ActionListener, KeyListener, Runnable {
         }
 
         mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        mainText.selectAll();   // THIS ONE WORKS!!! WHY?!
+        mainText.selectAll();
     }
 
     private void showAboutDialog() {
-        JLabel titleLabel = new JLabel("Permutor v" + VERSION);
+        JLabel aboutLabel = new JLabel("<html>"
+                + "<h3><b><u>Permutor v0.01</u></b></h3>"
+                + "</html>");
+        aboutLabel.setSize(100,200);
         final JDialog aboutDiag = new JDialog(mainFrame, "About");
         aboutDiag.setSize(400, 250);
-        aboutDiag.add(titleLabel);
+        aboutDiag.add(aboutLabel);
         aboutDiag.setVisible(true);
     }
 
@@ -360,9 +361,5 @@ class Permutor implements ActionListener, KeyListener, Runnable {
         String result;
         result = s.substring(s.length() - 4);
         return result;
-    }
-
-    public void run() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
