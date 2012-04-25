@@ -35,6 +35,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.activation.MimetypesFileTypeMap;
 import javax.swing.*;
 import permute.Permute;
@@ -309,16 +311,24 @@ class Permutor implements ActionListener, KeyListener {
         mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         mainText.selectAll();
     }
-
+    
+    // Create and show About Dialog
     private void showAboutDialog() {
-        JLabel aboutLabel = new JLabel("<html>"
-                + "<h3><b><u>Permutor v0.01</u></b></h3>"
-                + "</html>");
-        aboutLabel.setSize(100,200);
-        final JDialog aboutDiag = new JDialog(mainFrame, "About");
-        aboutDiag.setSize(400, 250);
-        aboutDiag.add(aboutLabel);
-        aboutDiag.setVisible(true);
+        JDialog about = new JDialog(mainFrame, "About");
+        JEditorPane aboutPane = new JEditorPane();
+        try {
+            aboutPane.setPage("file:///D:/devel/Java/Permutor/src/Permutor_about.html");
+        } catch (IOException ex) {
+            System.out.println("Error: " + ex + "File bad.");
+            Logger.getLogger(Permutor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        about.add(aboutPane);
+        about.setSize(250,350);
+        about.setResizable(false);
+        about.setVisible(true);
+        
+               
     }
 
     private boolean exportCSV() {
